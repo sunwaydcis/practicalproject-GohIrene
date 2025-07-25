@@ -10,9 +10,7 @@ lazy val root = (project in file("."))
       // Determine OS version of JavaFX binaries
       val osName = System.getProperty("os.name") match {
         case n if n.startsWith("Linux")   => "linux"
-        case n if n.startsWith("Mac")     =>
-          val arch = System.getProperty("os.arch")
-          if (arch == "aarch64" || arch == "arm64") "mac-aarch64" else "mac"
+        case n if n.startsWith("Mac")     => "mac"
         case n if n.startsWith("Windows") => "win"
         case _                            => throw new Exception("Unknown platform!")
       }

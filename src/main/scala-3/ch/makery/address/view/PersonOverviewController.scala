@@ -3,7 +3,9 @@ import ch.makery.address.model.Person
 import ch.makery.address.MainApp
 import javafx.fxml.FXML
 import javafx.scene.control.{Label, TableColumn, TableView}
-import scalafx.Includes._
+import scalafx.Includes.*
+import javafx.scene.control.TextField
+
 @FXML
 class PersonOverviewController():
   @FXML
@@ -24,9 +26,34 @@ class PersonOverviewController():
   private var cityLabel: Label = null
   @FXML
   private var birthdayLabel: Label = null
+  @FXML
+  private var mytext: TextField = null //use the grey textField, not the blue one
   // initialize Table View display contents model
   def initialize() =
     personTable.items = MainApp.personData
     // initialize columns's cell values
-    firstNameColumn.cellValueFactory = {_.value.firstName}
+    firstNameColumn.cellValueFactory = {x=> x.value.firstName}
     lastNameColumn.cellValueFactory  = {_.value.lastName}
+
+    firstNameLabel.text <== mytext.text  // how to sync the textfield and the firstnamelabel tgt
+
+  // Person details in plug (helper details)
+  private def showPersonDetails(person: Option[Person]): Unit =
+    person match
+      case Some(person) => //has value, inside bracket is any variable
+        // Fill the labels with info from the person object.
+        firstNameLabel.text <== person.firstName
+        lastNameLabel.text <== person.lastName
+        streetLabel.text <== person.street
+        cityLabel.text <== person.city;
+        postalCodeLabel.text = person.postalCode.value.toString
+
+      case None =>
+        // Person is null, remove all the text.
+        firstNameLabel.text = ""
+        lastNameLabel.text = ""
+        streetLabel.text = ""
+        postalCodeLabel.text = ""
+        cityLabel.text = ""
+        birthdayLabel.text = ""
+
